@@ -10,7 +10,7 @@ public Plugin myinfo =
 	name = "Delay Giderme", 
 	author = "ByDexter", 
 	description = "", 
-	version = "1.0", 
+	version = "1.1", 
 	url = "https://steamcommunity.com/id/ByDexterTR - ByDexter#5494"
 };
 
@@ -19,7 +19,7 @@ ConVar delay_timer;
 
 public void OnPluginStart()
 {
-	delay_timer = CreateConVar("sm_delay_timer", "10", "Kaç dakika arayla delay giderilmesi sorulsun?", 0, true, 1.0);
+	delay_timer = CreateConVar("delay_timer", "0", "Kaç dakika arayla delay giderilmesi sorulsun? [ 0 = kapar ]", 0, true, 1.0);
 	RegConsoleCmd("sm_delay", Command_Delay);
 	AutoExecConfig(true, "Delay-Giderme", "ByDexter");
 }
@@ -55,7 +55,9 @@ public int Menu_callback(Menu menu, MenuAction action, int client, int position)
 		{
 			delete _timer;
 		}
-		_timer = CreateTimer(delay_timer.FloatValue, DelaySor, _, TIMER_FLAG_NO_MAPCHANGE);
+		if (delay_timer.IntValue > 0)
+			_timer = CreateTimer(delay_timer.FloatValue * 60.0, DelaySor, _, TIMER_FLAG_NO_MAPCHANGE);
+		
 		char item[4];
 		menu.GetItem(position, item, 4);
 		if (StringToInt(item) == 0)
@@ -105,7 +107,8 @@ public void warden_OnWardenCreated(int client)
 	{
 		delete _timer;
 	}
-	_timer = CreateTimer(delay_timer.FloatValue, DelaySor, _, TIMER_FLAG_NO_MAPCHANGE);
+	if (delay_timer.IntValue > 0)
+		_timer = CreateTimer(delay_timer.FloatValue * 60.0, DelaySor, _, TIMER_FLAG_NO_MAPCHANGE);
 }
 
 public Action DelaySor(Handle timer, any data)
