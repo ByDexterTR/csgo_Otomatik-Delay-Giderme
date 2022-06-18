@@ -111,11 +111,14 @@ public void warden_OnWardenCreated(int client)
 public Action DelaySor(Handle timer, any data)
 {
 	_timer = null;
-	for (int i = 1; i <= MaxClients; i++)
+	if (warden_exist())
 	{
-		if (IsValidClient(i) && warden_iswarden(i))
+		for (int i = 1; i <= MaxClients; i++)
 		{
-			Command_Delay(i, 0);
+			if (IsValidClient(i) && warden_iswarden(i))
+			{
+				Command_Delay(i, 0);
+			}
 		}
 	}
 }
