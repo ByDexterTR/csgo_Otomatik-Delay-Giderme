@@ -95,7 +95,8 @@ public Action UnMute(Handle timer, any data)
 		if (IsValidClient(i) && warden_iswarden(i))
 		{
 			BaseComm_SetClientMute(i, false);
-			PrintToChatAll("[SM] \x04%d dakika\x01 sonra tekrar soracağım delayı", delay_timer.FloatValue);
+			if (delay_timer.IntValue > 0)
+				PrintToChat(i, "[SM] \x04%d dakika\x01 sonra tekrar soracağım delayı", delay_timer.IntValue);
 		}
 	}
 	PrintCenterTextAll("Komutçunun delayı giderildi");
